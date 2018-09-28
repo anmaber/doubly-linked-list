@@ -30,6 +30,7 @@ class List
 public:
     List();
     void addLast(shared_ptr<Node> node);        // dodaje element na koniec listy
+    void addFirst(shared_ptr<Node> node);
     shared_ptr<Node> get(const int value);  // zwraca element o wskazanej wartości
 
 private:
@@ -56,6 +57,22 @@ void List::addLast(shared_ptr<Node> node)
         current->next = node;
         node->previous = current;
         tail=node;
+    }
+}
+
+void List::addFirst(shared_ptr<Node> node)
+{
+    if(!tail)
+    {
+        tail = node;
+        head = tail;
+    }
+    else
+    {
+        shared_ptr<Node> current = head;
+        current->previous = node;
+        node->next = current;
+        head=node;
     }
 }
 
@@ -96,7 +113,7 @@ int main()
         shared_ptr<Node> node7 = make_shared<Node>(7);
 
         lista.addLast(node4);
-        lista.addLast(make_shared<Node>(2));
+        lista.addFirst(make_shared<Node>(2));
         lista.addLast(node7);
         lista.addLast(make_shared<Node>(9));
         //auto node = lista.get(1);
