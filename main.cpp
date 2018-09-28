@@ -21,6 +21,7 @@ public:
         value(v)
     {}
     shared_ptr<Node> next;
+    shared_ptr<Node> previous;
     int value;
 };
 
@@ -28,43 +29,45 @@ class List
 {
 public:
     List();
-    void add(shared_ptr<Node> node);        // dodaje element na koniec listy
+    void addLast(shared_ptr<Node> node);        // dodaje element na koniec listy
     shared_ptr<Node> get(const int value);  // zwraca element o wskazanej wartości
 
 private:
-    shared_ptr<Node> first;
+    shared_ptr<Node> head;
+    shared_ptr<Node> tail;
 };
 
 List::List() :
-    first(nullptr)
+    head(nullptr),
+    tail(nullptr)
 {}
 
-void List::add(shared_ptr<Node> node)
+
+void List::addLast(shared_ptr<Node> node)
 {
-    if(!first)
+    if(!head)
     {
-        first = node;
+        head = node;
+        tail = head;
     }
     else
     {
-        shared_ptr<Node> current = first;
-        while(current->next)
-        {
-            current = current->next;
-        }
+        shared_ptr<Node> current = tail;
         current->next = node;
+        node->previous = current;
+        tail=node;
     }
 }
 
 shared_ptr<Node> List::get(const int value)
 {
-    if(!first)
+    if(!head)
     {
         throw EmptyListError{};
     }
     else
     {
-        shared_ptr<Node> current = first;
+        shared_ptr<Node> current = head;
         do
         {
             if(current->value == value)
@@ -78,7 +81,7 @@ shared_ptr<Node> List::get(const int value)
                 current = current->next;
             }
         } while(current);
-        
+
         throw NotFoundError{};
         return nullptr;
     }
@@ -92,11 +95,11 @@ int main()
         shared_ptr<Node> node4 = make_shared<Node>(4);
         shared_ptr<Node> node7 = make_shared<Node>(7);
 
-        lista.add(node4);
-        lista.add(make_shared<Node>(2));
-        lista.add(node7);
-        lista.add(make_shared<Node>(9));
-        auto node = lista.get(1);
+        lista.addLast(node4);
+        lista.addLast(make_shared<Node>(2));
+        lista.addLast(node7);
+        lista.addLast(make_shared<Node>(9));
+        //auto node = lista.get(1);
     }
     catch (runtime_error & re)
     {
