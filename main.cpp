@@ -32,6 +32,7 @@ public:
     void addLast(shared_ptr<Node> node);        // dodaje element na koniec listy
     void addFirst(shared_ptr<Node> node);
     shared_ptr<Node> get(const int value);  // zwraca element o wskazanej wartości
+    shared_ptr<Node> getBackward(const int value);
 
 private:
     shared_ptr<Node> head;
@@ -104,6 +105,34 @@ shared_ptr<Node> List::get(const int value)
     }
 }
 
+shared_ptr<Node> List::getBackward(const int value)
+{
+    if(!tail)
+    {
+        throw EmptyListError{};
+    }
+    else
+    {
+       shared_ptr<Node> current = tail;
+        do
+        {
+            if(current->value == value)
+            {
+                cout << "Found value " << current->value << endl;
+                return current;
+            }
+            else
+            {
+                cout << "Going through " << current->value << endl;
+                current = current->previous;
+            }
+        } while(current);
+
+        throw NotFoundError{};
+        return nullptr;
+    }
+}
+
 int main()
 {
     try
@@ -116,7 +145,8 @@ int main()
         lista.addFirst(make_shared<Node>(2));
         lista.addLast(node7);
         lista.addLast(make_shared<Node>(9));
-        //auto node = lista.get(1);
+        auto node = lista.get(9);
+        auto node2 = lista.getBackward(2);
     }
     catch (runtime_error & re)
     {
