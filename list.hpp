@@ -5,27 +5,29 @@
 
 using namespace std;
 
+template<class T>
 class List
 {
 public:
     List();
-    void addLast(shared_ptr<Node> node);        // dodaje element na koniec listy
-    void addFirst(shared_ptr<Node> node);
-    shared_ptr<Node> get(const int value);  // zwraca element o wskazanej wartości
-    shared_ptr<Node> getBackward(const int value);
+    void addLast(shared_ptr<Node<T>> node);        // dodaje element na koniec listy
+    void addFirst(shared_ptr<Node<T>> node);
+    shared_ptr<Node<T>> get(const T value);  // zwraca element o wskazanej wartości
+    shared_ptr<Node<T>> getBackward(const T value);
 
 private:
-    shared_ptr<Node> head;
-    shared_ptr<Node> tail;
+    shared_ptr<Node<T>> head;
+    shared_ptr<Node<T>> tail;
 };
 
-List::List() :
+template <class T>
+List<T>::List() :
     head(nullptr),
     tail(nullptr)
 {}
 
-
-void List::addLast(shared_ptr<Node> node)
+template <class T>
+void List<T>::addLast(shared_ptr<Node<T>> node)
 {
     if(!head)
     {
@@ -34,14 +36,15 @@ void List::addLast(shared_ptr<Node> node)
     }
     else
     {
-        shared_ptr<Node> current = tail;
+        shared_ptr<Node<T>> current = tail;
         current->next = node;
         node->previous = current;
         tail=node;
     }
 }
 
-void List::addFirst(shared_ptr<Node> node)
+template <class T>
+void List<T>::addFirst(shared_ptr<Node<T>> node)
 {
     if(!tail)
     {
@@ -50,14 +53,15 @@ void List::addFirst(shared_ptr<Node> node)
     }
     else
     {
-        shared_ptr<Node> current = head;
+        shared_ptr<Node<T>> current = head;
         current->previous = node;
         node->next = current;
         head=node;
     }
 }
 
-shared_ptr<Node> List::get(const int value)
+template <class T>
+shared_ptr<Node<T>> List<T>::get(const T value)
 {
     if(!head)
     {
@@ -65,7 +69,7 @@ shared_ptr<Node> List::get(const int value)
     }
     else
     {
-        shared_ptr<Node> current = head;
+        shared_ptr<Node<T>> current = head;
         do
         {
             if(current->value == value)
@@ -85,7 +89,8 @@ shared_ptr<Node> List::get(const int value)
     }
 }
 
-shared_ptr<Node> List::getBackward(const int value)
+template <class T>
+shared_ptr<Node<T>> List<T>::getBackward(const T value)
 {
     if(!tail)
     {
@@ -93,7 +98,7 @@ shared_ptr<Node> List::getBackward(const int value)
     }
     else
     {
-       shared_ptr<Node> current = tail;
+       shared_ptr<Node<T>> current = tail;
         do
         {
             if(current->value == value)

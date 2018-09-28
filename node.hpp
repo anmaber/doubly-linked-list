@@ -4,14 +4,15 @@
 
 using namespace std;
 
+template<class T>
 class Node
 {
 public:
-    Node(const int v) :
+    Node(const T v) :
         next(nullptr),
         value(v)
     {}
     shared_ptr<Node> next;
     weak_ptr<Node> previous;
-    int value;
+    T value;
 };
